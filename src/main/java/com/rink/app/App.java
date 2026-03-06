@@ -1,6 +1,7 @@
 package com.rink.app;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rink.client.ApiClient;
 import com.rink.model.Country;
+import com.rink.model.CountryDirectory;
 
 public class App {
 
@@ -27,17 +29,15 @@ public class App {
 		fields.add("capitalInfo");
 
 		String json_response = client.getAllCountries(fields);
+		
+		CountryDirectory cd = new CountryDirectory(json_response);
+		Country nz = cd.getCountryByCode("NZL");
+		
 
-		try {
-			ObjectMapper objectMapper = new ObjectMapper(); // Creates the object mapper to read the object array
-			List<Country> countries = objectMapper.readValue(json_response, new TypeReference<List<Country>>() {
-			}); //Turns each element in the JSON response into a country object and adds that object to a List
-			
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}		
+
+
+
+
+
 	}
-
 }

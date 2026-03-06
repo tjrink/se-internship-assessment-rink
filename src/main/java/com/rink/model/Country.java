@@ -79,6 +79,18 @@ public class Country {
     	return timezones;
     }
 
+    //Determines if a country uses a specified language
+    
+    public boolean usesLanguage(String language) {
+    	if (this.languages.containsKey(language) || this.languages.containsValue(language)) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    
+    
     //Wrapper class that maps the "name" variable in the class to the "name -> common' field in the JSON response
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Name {
