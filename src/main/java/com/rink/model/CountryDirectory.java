@@ -53,4 +53,10 @@ public class CountryDirectory {
 		return null;
 	}
 	
+	//Returns a hash code of the current country map
+	//Allows for easy checking to determine if any countries have changed
+	public int getHashCode() {
+		return this.country_map.hashCode();
+	}
+	
 }
