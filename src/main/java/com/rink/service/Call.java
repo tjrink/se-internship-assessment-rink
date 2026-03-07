@@ -29,5 +29,9 @@ public class Call {
 	public String getLanguage() {
 		return this.call_language;
 	}
+	
+	public ZonedDateTime getCallTime() {
+		return this.call_time_utc;
+	}
 
 }

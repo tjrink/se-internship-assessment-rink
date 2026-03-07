@@ -1,5 +1,6 @@
 package com.rink.service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.ZoneId;
@@ -48,8 +49,22 @@ public class CallCenterUtilities {
 	}
 	
 	public static ZonedDateTime getLocalTime(ZonedDateTime call_center_time, String timezone) {
-		return call_center_time.withZoneSameInstant(ZoneId.of(timezone.replace("UTC", "")));
+		String timezone_formatted = timezone.replace("UTC", "");
+		return call_center_time.withZoneSameInstant(ZoneId.of(timezone_formatted));
 		//toOffsetDateTime(timezone.replace("UTC", ""));
+		
+	}
+	
+	//Determines if it is currently within working hours at the given time.
+	public static boolean getTimeToOpen(ZonedDateTime zdt) {
+		DayOfWeek weekday = zdt.getDayOfWeek();
+		int hour = zdt.getHour();
+		
+		if (weekday != DayOfWeek.SATURDAY && weekday != DayOfWeek.SUNDAY && hour >= 8 && hour < 17) {
+			return true;
+		} else {
+			return false;
+		}
 		
 	}
 }
