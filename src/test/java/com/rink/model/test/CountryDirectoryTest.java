@@ -27,7 +27,6 @@ public class CountryDirectoryTest {
 		ArrayList<String> fields = new ArrayList<>();
 		fields.add("name");
 		fields.add("cca3");
-		fields.add("idd");
 		fields.add("capital");
 		fields.add("languages");
 		fields.add("timezones");

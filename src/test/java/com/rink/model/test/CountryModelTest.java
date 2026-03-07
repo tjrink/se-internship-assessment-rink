@@ -33,7 +33,6 @@ public class CountryModelTest {
 			          "nzs": "New Zealand Sign Language"
 			        },
 			        "cca3": "NZL",
-			        "idd": { "root": "+6", "suffixes": ["4"] },
 			        "capital": ["Wellington"],
 			        "timezones": ["UTC-11:00", "UTC-10:00", "UTC+12:00", "UTC+12:45", "UTC+13:00"]
 			      }

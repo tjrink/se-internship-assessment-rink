@@ -57,6 +57,11 @@ public class Country {
 	public String getCommonName() {
 		return (name != null) ? name.common : null;
 	}
+	
+	//Returns the flag emoji for the country
+	public String getFlag() {
+		return this.flag;
+	}
 
 	//Returns the hash map of spoken languages
 	public Map<String, String> getLanguages() {

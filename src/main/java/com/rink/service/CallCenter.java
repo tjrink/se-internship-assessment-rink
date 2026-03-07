@@ -3,6 +3,7 @@ package com.rink.service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +30,19 @@ public class CallCenter {
 	public void addTime(long minutes) {
 		call_center_time = this.call_center_time.plusMinutes(minutes);
 	}
+	
+	public CountryDirectory getCountryDirectory() { return this.cd;}
+
 
 	// Returns the current time at the call center
 	public ZonedDateTime getCurrentTime() {
 		return this.call_center_time;
+	}
+	
+	//Returns the current time at the call center as a formatted string
+	public String getCurrentTimeString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy - HH:mm:ss z");
+		return this.call_center_time.format(formatter);
 	}
 
 	public Call getLatestCall() {
