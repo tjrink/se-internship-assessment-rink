@@ -18,7 +18,16 @@ public class Call {
 		this.call_language = language;
 		this.call_time_utc= call_time;
 		
-		System.out.println("Call created from " + call_country_code + " in " + call_language + " at " + this.call_time_utc);
+	}
+	
+	//Returns a string identifying the time of the call, along with its originating country and the UTC-0 time 
+	public String getCallIntro() {
+		return String.format("%02d", call_time_utc.getHour()) + ":" + String.format("%02d", call_time_utc.getMinute()) + ": Call incoming from " + this.call_country_code + ". Requested Language: " + this.call_language;
+	}
+	
+	//Return the language the call is held in
+	public String getLanguage() {
+		return this.call_language;
 	}
 
 }

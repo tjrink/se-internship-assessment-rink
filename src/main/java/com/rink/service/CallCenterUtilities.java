@@ -2,6 +2,8 @@ package com.rink.service;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -42,6 +44,12 @@ public class CallCenterUtilities {
 		Random random = new Random();
 		int idx = random.nextInt(languages.size());
 		return languages.get(idx);
+		
+	}
+	
+	public static ZonedDateTime getLocalTime(ZonedDateTime call_center_time, String timezone) {
+		return call_center_time.withZoneSameInstant(ZoneId.of(timezone.replace("UTC", "")));
+		//toOffsetDateTime(timezone.replace("UTC", ""));
 		
 	}
 }
