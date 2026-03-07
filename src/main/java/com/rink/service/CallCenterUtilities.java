@@ -2,6 +2,8 @@ package com.rink.service;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -12,8 +14,7 @@ public class CallCenterUtilities {
 	
 	//Generate a random date within the current year
 	public static LocalDate generateRandomDate() {
-		int current_year = Year.now().getValue(); //Gets the current year
-		
+		int current_year = Year.now().getValue(); //Gets the current year	
 		
 		//Sets the min and max values of potential dates
 		long minDate = LocalDate.of(current_year, 1, 1).toEpochDay();
@@ -28,5 +29,19 @@ public class CallCenterUtilities {
 		
 		return ThreadLocalRandom.current().nextLong(min_time_between, max_time_between);
 	}
-
+	
+	public static String selectRandomCountry(List<String> countries) {
+			return countries.get(ThreadLocalRandom.current().nextInt(0, countries.size()));
+	}
+	
+	public static String selectRandomLanguage(List<String> languages) {
+		if (languages.size() == 0) {
+			return null;
+		}
+		
+		Random random = new Random();
+		int idx = random.nextInt(languages.size());
+		return languages.get(idx);
+		
+	}
 }
