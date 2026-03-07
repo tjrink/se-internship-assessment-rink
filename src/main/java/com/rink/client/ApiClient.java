@@ -4,12 +4,25 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApiClient {
 
 	private int max_fields = 10; // Maximum number of fields that can be requested in a single call
 
+	public List<String> buildFieldList() {
+		ArrayList<String> fields = new ArrayList<>();
+		fields.add("name");
+		fields.add("cca3");
+		fields.add("capital");
+		fields.add("languages");
+		fields.add("timezones");
+		fields.add("capitalInfo");
+
+		return fields;
+	}
+	
 	// Calls the restCountries API /all route
 	// Returns JSON for all countries
 	public String getAllCountries(List<String> fields) {

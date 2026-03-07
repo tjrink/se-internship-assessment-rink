@@ -25,16 +25,8 @@ public class Country {
 	@JsonProperty("timezones")
 	private List<String> timezones; // A list of the country's timezones
 
-	@JsonProperty("idd")
-	private CallingCode callingCode; // The country's primary calling code
-
 	@JsonProperty("capitalInfo")
 	private CapitalInfo capitalLatLng; // The latitude and longitude of the capital city
-
-	// Returns the calling code of the country
-	public String getCallingCode() {
-		return (callingCode != null) ? callingCode.root : null;
-	}
 
 	// Returns a string for the country's capital
 	// Some countries have multiple capitals, so the data is stored as a list of

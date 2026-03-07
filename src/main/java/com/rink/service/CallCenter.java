@@ -68,6 +68,7 @@ public class CallCenter {
 		return countries_with_language;
 	}
 
+	//Performs the full routing process for a cal
 	public Country routeCall(Call call) {
 		//Print out the time of the call and its information
 		System.out.println(call.getCallIntro());
@@ -77,7 +78,8 @@ public class CallCenter {
 		
 		//Loop through all valid countries to check for open timezones
 		for (String s: valid_countries) {
-			ZonedDateTime local_time;
+			ZonedDateTime local_time; //Initialization
+			
 			//Loop through each time zone, return the country if the time is open
 			Country c = cd.getCountryByCode(s);
 			for (String zone: c.getTimeZones()) {
