@@ -10,8 +10,13 @@ import com.rink.service.CallCenter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Year;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -162,6 +167,9 @@ public class GUI extends JFrame {
 		// Add countries to the countryDropdown
 		populateCountryDropdown();
 		populateDateDropdowns();
+		
+		//Sets local date and time in spinners and selectors
+		setLocalTime();
 
 		// Changes language and timezone dropdowns when countryDropdown is changed
 		countryDropdown.addActionListener(new ActionListener() {
@@ -206,12 +214,28 @@ public class GUI extends JFrame {
 				//Confirms that the selected date is valid and submits the call.
 				//If not valid, shows an error message
 				if (validateDateSelections(monthSelected, daySelected, yearSelected)) {
-					LocalDateTime callTime = LocalDateTime.of(yearSelected, monthSelected, daySelected, hourSelected,
-							minuteSelected, secondSelected);
-					submitCall(cci, selectedLanguage, selectedTimezone, callTime);
+					String timezone;
+					
+					if (selectedTimezone.equals("UTC")) {
+						timezone = selectedTimezone;
+					} else {
+						timezone = selectedTimezone.replace("UTC", "");
+					}
+					
+					LocalDate callDate = LocalDate.of(yearSelected, monthSelected, daySelected);
+					LocalTime callTime = LocalTime.of(hourSelected, minuteSelected, secondSelected);
+					
+					ZonedDateTime callZonedTime = ZonedDateTime.of(callDate, callTime, ZoneId.of(selectedTimezone));
+					submitCall(cci, selectedLanguage, selectedTimezone, callZonedTime);
 				} else {
 					showInvalidDateMessage();
 				}
+				
+				//Prints the intro message for the call
+				console.append(cc.getLatestCall().getCallIntro() + "\n");
+				console.append("Identifying appropriate call center\n");
+				
+				
 			}
 		});
 
@@ -259,16 +283,23 @@ public class GUI extends JFrame {
 
 	}
 	
+	//Sets the spinners and selectors to the local time
+	public void setLocalTime() {
+		LocalDateTime ahora = LocalDateTime.now();
+		yearDropdown.setSelectedIndex(0); //Current year is always first value
+		monthDropdown.setSelectedIndex(ahora.getMonthValue() - 1);
+		dayDropdown.setSelectedIndex(ahora.getDayOfMonth() - 1);
+	}
+	
 	//Shows a popup error message if an invalid date is selected
 	public void showInvalidDateMessage() {
 		JFrame errorFrame = new JFrame();
 		JOptionPane.showMessageDialog(errorFrame, "Please Select a Valid Date", "Invalid Date", JOptionPane.INFORMATION_MESSAGE);		
 	}
 	
-	public void submitCall(CountryComboItem cci, String selectedLanguage, String selectedTimezone, LocalDateTime callTime) {
-		console.append("Call Incoming From " + cci.toString() + "\nRequested Language: " + selectedLanguage
-				+ "\nLocalTime: " + callTime + "\n");
-
+	//Generates a new call in the CallCenter with the specified values
+	public void submitCall(CountryComboItem cci, String selectedLanguage, String selectedTimezone, ZonedDateTime callTime) {
+		cc.acceptCall(cci.country.getCca3(), selectedLanguage, selectedTimezone, callTime);		
 	}
 	
 	//Determines if the selected date is valid

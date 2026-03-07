@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +48,11 @@ public class CallCenterUtilities {
 		return languages.get(idx);
 		
 	}
+	
+	public static ZonedDateTime getTimeAtUTC0(ZonedDateTime localTime) {
+		return localTime.withZoneSameInstant(ZoneOffset.UTC);
+	}
+
 	
 	public static ZonedDateTime getLocalTime(ZonedDateTime call_center_time, String timezone) {
 		String timezone_formatted = timezone.replace("UTC", "");

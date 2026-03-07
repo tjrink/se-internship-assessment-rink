@@ -16,7 +16,7 @@ import java.time.ZoneOffset;
 
 public class CallCenter {
 	private CountryDirectory cd;
-	private ZonedDateTime call_center_time;
+	private ZonedDateTime call_center_time; //The UTC time of the call
 	private ArrayList<Call> calls_list = new ArrayList<Call>();
 
 	public CallCenter(LocalDate date, CountryDirectory cd) {
@@ -25,6 +25,15 @@ public class CallCenter {
 
 		this.cd = cd;
 	}
+	
+	public void acceptCall(String country_code, String language, String timezone, ZonedDateTime local_call_time) {
+		calls_list.add(new Call(country_code, language, timezone, local_call_time));
+	}
+	
+//	public Call(String country_code, String language, ZonedDateTime call_time) {
+//		this.call_country_code = country_code;
+//		this.call_language = language;
+//		this.call_time_utc= call_time;
 
 	// Adds a specified number of minutes to the call center's time
 	public void addTime(long minutes) {
@@ -63,7 +72,9 @@ public class CallCenter {
 		String selected_language = CallCenterUtilities.selectRandomLanguage(language_names);
 
 		// Generates a new call and adds it to the array list
-		calls_list.add(new Call(selected_country_code, selected_language, this.getCurrentTime()));
+		//calls_list.add(new Call(selected_country_code, selected_language, this.getCurrentTime()));
+		
+		System.out.println("You have messed with CallCenter.generateCall. You need to fix it.");
 	}
 
 	// Identifies the eligible countries to take the call
