@@ -6,6 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+//Ignores any fields in the JSON that are not specifically mapped to the Country class
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Country {
 

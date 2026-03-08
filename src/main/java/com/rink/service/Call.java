@@ -20,22 +20,6 @@ public class Call {
 		this.call_time_local= call_time;
 	}
 	
-	//Returns a string identifying the time of the call, along with its originating country and the UTC-0 time 
-	public String getCallIntro() {
-		//Breaks out the hours, mins, seconds for printing to console
-		ZonedDateTime utc_time = getCallTimeInUTC0();
-		String utc_hours = String.format("%02d", utc_time.getHour());
-		String utc_mins = String.format("%02d", utc_time.getMinute());
-		String utc_seconds = String.format("%02d", utc_time.getSecond());
-		
-		String local_hours = String.format("%02d", call_time_local.getHour());
-		String local_mins = String.format("%02d", call_time_local.getMinute());
-		String local_seconds = String.format("%02d", call_time_local.getSecond());
-		
-
-		return utc_hours + ":" + utc_mins + ":" + utc_seconds + ": Call From " + this.call_country_code + ". Requested Language: " + this.call_language + ". Local Time: " + local_hours + ":" + local_mins + ":" + local_seconds;
-	}
-	
 	//Returns the call's country
 	public String getCountryCode() {
 		return this.call_country_code;

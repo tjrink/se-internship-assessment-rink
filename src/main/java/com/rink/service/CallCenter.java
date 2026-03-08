@@ -48,26 +48,23 @@ public class CallCenter {
 	}
 
 	//Performs the full routing process for a cal
-	public String routeCall(Call call) {		
-				//Creates a list of all countries that speak the specified language
+	public HashSet<Country> routeCall(Call call) {		
+		//Creates a list of all countries that speak the specified language
 		List<String> valid_countries = getCountriesWithLanguage(call.getLanguage());
+
+		//Initialize a set for countries that have at least one open call center
+		HashSet<Country> openCountries = new HashSet<>();
 		
 		//Checks each country to determine if they have any time zones that are open.
-		//When an open country is found, returns the country in a string to display
+		//If a country has an "open" timezone, it is placed in the set
 		for (String countryCode: valid_countries) {
 			String openZone = checkCountryTimezones(countryCode, call);
 			if (openZone != null) {
-				Country routedCountry = cd.getCountryByCode(countryCode);
-				ZonedDateTime routedTime = CallCenterUtilities.getLocalTime(call.getCallTimeInUTC0(), openZone);
-				String routedHours = String.format("%02d", routedTime.getHour());
-				String routedMins = String.format("%02d", routedTime.getMinute());
-				String routedTimePrintout = routedHours + ":" + routedMins;
-
-				return "Call being routed to call center in " + routedCountry.getCommonName() + " (" + openZone + "). Local time at call center is " + routedTimePrintout;
+				openCountries.add(cd.getCountryByCode(countryCode));
 			}
 		}
-
-		return "No call center available. Call disconnected.";
+		
+		return openCountries;
 	}
 	
 	//Loops through each timezone for a country
@@ -75,13 +72,11 @@ public class CallCenter {
 	//As soon as one open timezone is found, it is returned
 	public String checkCountryTimezones(String country_code, Call call) {
 		List<String> country_timezones = cd.getCountryByCode(country_code).getTimeZones();
-		ZonedDateTime call_time_local = call.getCallTime();
-		
 		
 		for (String zone : country_timezones) {
 			ZonedDateTime time_to_check = CallCenterUtilities.getLocalTime(call.getCallTimeInUTC0(), zone);
-			if (CallCenterUtilities.getTimeToOpen(time_to_check)) {
-				return zone;
+			if (time_to_check != null && CallCenterUtilities.checkIfInWorkingHours(time_to_check)) {
+			    return zone;
 			}
 		}
 		

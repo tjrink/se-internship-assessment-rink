@@ -10,9 +10,6 @@ import com.rink.client.ApiClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ApiClientTest {
 	
@@ -37,8 +34,5 @@ public class ApiClientTest {
 		List<String> fields_list = new ArrayList<>();
 		assertEquals("NOT SENT: No fields provided", client.getAllCountries(fields_list));
 	}
-	
-//	@Test
-	//Sends a request with field names that are not in the database
 	
 }

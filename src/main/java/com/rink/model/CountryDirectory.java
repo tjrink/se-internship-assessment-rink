@@ -69,14 +69,14 @@ public class CountryDirectory {
 		return null;
 	}
 	
-	//Returns the list of all coutry codes
-	public Set<String> getCountryCodes() {
-		return this.country_map.keySet();
-	}
-	
 	//Returns the list of all country codes with timezones and languages in the list
 	public List<String> getValidCountryCodes() {
 		return valid_country_codes;
+	}
+	
+	//Returns the number of countries contained in the data set
+	public int getDatasetSize() {
+		return this.country_map.size();
 	}
 	
 }

@@ -20,6 +20,7 @@ import java.time.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -195,6 +196,9 @@ public class GUI extends JFrame {
 		createCallButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//Clears all content from the text area
+				console.setText("");
+				
 				
 				//Record values from country, language and timezone drop downs
 				CountryComboItem cci = (CountryComboItem) countryDropdown.getSelectedItem();
@@ -214,8 +218,6 @@ public class GUI extends JFrame {
 				//Confirms that the selected date is valid and submits the call.
 				//If not valid, shows an error message
 				if (validateDateSelections(monthSelected, daySelected, yearSelected)) {
-					String timezone;
-										
 					LocalDate callDate = LocalDate.of(yearSelected, monthSelected, daySelected);
 					LocalTime callTime = LocalTime.of(hourSelected, minuteSelected, secondSelected);
 					
@@ -224,14 +226,32 @@ public class GUI extends JFrame {
 				} else {
 					showInvalidDateMessage();
 				}
-				
 				Call call = cc.getLatestCall();
+
+				
+				//Prepares
+				String local_hours = String.format("%02d", hourSelected);
+				String local_mins = String.format("%02d", minuteSelected);
+				String local_seconds = String.format("%02d", secondSelected);
+				
 				//Prints the intro message for the call
-				console.append(call.getCallIntro() + "\n");
+				console.append("Call From " + cci.country.getCommonName() + ". Requested Language: " + call.getLanguage() + ". Local Time: " + local_hours + ":" + local_mins + ":" + local_seconds + "\n");				
 				console.append("Identifying appropriate call center\n");
 
 				//Routes the call and prints the result
-				console.append(cc.routeCall(call)+"\n");
+				HashSet<Country> openCountries = cc.routeCall(call);
+				if (openCountries.size() == 0) {
+					console.append("No call centers available. Call disconnected.\n");
+				} else {
+					console.append("Available Countries: \n");
+					int count = 1;
+					for (Country c: openCountries) {
+						console.append(count + ". " + c.getCommonName() + "\n");
+						count++;
+					}
+				}
+				
+				
 				console.append("*".repeat(32) + "\n");
 			}
 		});

@@ -10,11 +10,11 @@ public class App {
 		
 //		Creates an API client and sends a list of the required fields to retrieve data from server
 		ApiClient client = new ApiClient();		
-		String json_response = client.getAllCountries(client.buildFieldList());
+		String jsonResponse = client.getAllCountries(client.buildFieldList());
 		
 		
 		//Parses JSON response from server and creates an object for each country
-		CountryDirectory cd = new CountryDirectory(json_response);
+		CountryDirectory cd = new CountryDirectory(jsonResponse);
 		
 	
 		//Creates a new CallCenter

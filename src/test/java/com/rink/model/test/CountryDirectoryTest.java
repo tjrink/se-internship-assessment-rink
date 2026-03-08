@@ -9,9 +9,8 @@ import com.rink.model.CountryDirectory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CountryDirectoryTest {
@@ -27,10 +26,8 @@ public class CountryDirectoryTest {
 		ArrayList<String> fields = new ArrayList<>();
 		fields.add("name");
 		fields.add("cca3");
-		fields.add("capital");
 		fields.add("languages");
 		fields.add("timezones");
-		fields.add("capitalInfo");
 
 		String json_response = client.getAllCountries(fields);
 		
@@ -46,6 +43,12 @@ public class CountryDirectoryTest {
 		assertNotNull(sa); //Asserts that the South African object was found
 		assertTrue(sa.usesLanguage("sfs")); //Asserts that SASL is an official language using the ISO 639-3 code
 		assertTrue(sa.usesLanguage("South African Sign Language")); //Asserst that SASL is an official language using the official name
+	}
+	
+	@Test
+	//Checks the number of countries in the map
+	public void checkNumberOfCountries() {
+		assertEquals(250, cd.getDatasetSize());
 	}
 	
 }

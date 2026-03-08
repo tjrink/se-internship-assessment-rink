@@ -1,21 +1,15 @@
 package com.rink.service.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Year;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.rink.client.ApiClient;
 import com.rink.model.CountryDirectory;
 import com.rink.service.CallCenter;
-import com.rink.service.CallCenterUtilities;
 
 public class CallCenterTest {
 
@@ -69,11 +63,8 @@ public class CallCenterTest {
 		// Parses JSON response from server and creates an object for each country
 		CountryDirectory cd = new CountryDirectory(dummy_json);
 
-		// Establishes a random date in the current year for the c
-		LocalDate d = CallCenterUtilities.generateRandomDate();
-
 		// Creates a new CallCenter
-		cc = new CallCenter(d, cd);
+		cc = new CallCenter(cd);
 	}
 
 	@Test
@@ -96,17 +87,5 @@ public class CallCenterTest {
 		assertTrue(english_list_code.contains("NZL"));
 		assertTrue(english_list_code.contains("USA"));
 
-	}
-	
-
-	@Test
-	// Confirms call center addTime is functioning
-	public void addTimeTest() {
-		assertEquals(LocalTime.MIDNIGHT, cc.getCurrentTime().toLocalTime()); // Confirms date starts at midnight
-
-		cc.addTime(25); // Add 25 minutes to the time
-
-		assertEquals(LocalTime.of(0, 25), cc.getCurrentTime().toLocalTime()); // Confirms that adding time is reflected
-																				// in call center time
 	}
 }

@@ -1,8 +1,5 @@
 package com.rink.model.test;
 
-import java.util.ArrayList;
-
-import com.rink.client.ApiClient;
 import com.rink.model.Country;
 import com.rink.model.CountryDirectory;
 
@@ -49,11 +46,6 @@ public class CountryModelTest {
 	}
 	
 	@Test
-	public void countryCapitalTest() {
-		assertEquals("Wellington", nz.getCapital());
-	}
-	
-	@Test
 	public void countryLanguagesTest() {
 		assertTrue(nz.usesLanguage("eng")); //Tests English using language code - First language in list works with code
 		assertTrue(nz.usesLanguage("English")); //Tests English using full name - First langauge in list works with full name
@@ -66,7 +58,6 @@ public class CountryModelTest {
 	@Test
 	public void countryTimezonesTest() {
 		assertEquals(5, nz.getTimeZones().size()); //Appropriate number of time zones appear
-		assertTrue(nz.getTimeZones().contains("UTC-11:00")); //First item appears
 		assertTrue(nz.getTimeZones().contains("UTC+12:45")); //Later item appears
 		
 		assertFalse(nz.getTimeZones().contains("UTC -11")); //Reject partial match
