@@ -1,12 +1,8 @@
 package com.rink.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,8 +16,10 @@ public class CountryDirectory {
 	private HashMap<String, Country> country_map = new HashMap<>();
 	
 	//A list of the CCA3 code for each country that is "valid" meaning that it has at least one timezone and at least one spoken language
-	private List<String> valid_country_codes; //A li
-	
+	private List<String> valid_country_codes;
+
+	//Takes the response string from the API and parses it into a list of Country objects
+	//This list is then converted to a HashMap that is used to search and retrieve objects
 	public CountryDirectory(String response) {
 		List<Country> country_list = parseResponseToList(response); //Turns the response string to a list of country objects
 		if (country_list != null) { createHashMap(country_list);} //Maps the country objects to a hashmap for easy search

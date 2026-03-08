@@ -39,7 +39,6 @@ public class GUI extends JFrame {
 	private JSpinner minuteSpinner;
 	private JSpinner secondSpinner;
 	private JButton createCallButton;
-	private JButton simulateDayButton;
 
 	public GUI(CallCenter cc) {
 		this.cc = cc;
