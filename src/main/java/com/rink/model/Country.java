@@ -60,12 +60,4 @@ public class Country {
 		public String common;
 	}
 
-	// Wrapper class that maps the "callingCode" variable in the class to the "idd
-	// -> root" field in the JSON response
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class CallingCode {
-		@JsonProperty("root")
-		public String root;
-
-	}
 }
