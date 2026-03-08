@@ -4,9 +4,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.rink.model.Country;
@@ -90,36 +95,77 @@ public class CallCenter {
 	}
 
 	//Performs the full routing process for a cal
-	public Country routeCall(Call call) {
-		//Print out the time of the call and its information
-		System.out.println(call.getCallIntro());
-		
-		//Creates a list of all countries that speak the specified language
+	public String routeCall(Call call) {		
+				//Creates a list of all countries that speak the specified language
 		List<String> valid_countries = getCountriesWithLanguage(call.getLanguage());
 		
-		//Loop through all valid countries to check for open timezones
-		for (String s: valid_countries) {
-			ZonedDateTime local_time; //Initialization
-			
-			//Loop through each time zone, return the country if the time is open
-			Country c = cd.getCountryByCode(s);
-			for (String zone: c.getTimeZones()) {
-				//Converts the call center time to the local time in the specified time zone
-				if (zone.equalsIgnoreCase("UTC")) { //If the timezone is UTC-0, returns local time
-					local_time = call.getCallTime();
-				} else {
-					local_time = CallCenterUtilities.getLocalTime(call_center_time, zone.replace("UTC", ""));
-				}
-				
-				if (CallCenterUtilities.getTimeToOpen(local_time)) {
-					System.out.println("Call being routed to " + c.getCommonName() + ". Local time is: " + local_time.toString());
-					return c;
-				}
-			}	
+		//Checks each country to determine if they have any time zones that are open.
+		//When an open country is found, returns the country in a string to display
+		for (String countryCode: valid_countries) {
+			String openZone = checkCountryTimezones(countryCode, call);
+			if (openZone != null) {
+				Country routedCountry = cd.getCountryByCode(countryCode);
+				ZonedDateTime routedTime= CallCenterUtilities.getLocalTime(call.getCallTime(), openZone);
+				String routedHours = String.format("%02d", routedTime.getHour());
+				String routedMins = String.format("%02d", routedTime.getMinute());
+				String routedTimePrintout = routedHours + ":" + routedMins;
+
+				return "Call being routed to call center in " + routedCountry.getCapital() + ", " + routedCountry.getCommonName() + ". Local time at call center is " + routedTimePrintout;
+			}
+		}
+//		String finalResult = getFinalResult(potentialCountries);
+		
+		
+//		//Loop through all valid countries to check for open timezones
+//		for (String s: valid_countries) {
+//			ZonedDateTime local_time; //Initialization
+//			
+//			//Loop through each time zone, return the country if the time is open
+//			Country c = cd.getCountryByCode(s);
+//			for (String zone: c.getTimeZones()) {
+//				//Converts the call center time to the local time in the specified time zone
+//				if (zone.equalsIgnoreCase("UTC")) { //If the timezone is UTC-0, returns local time
+//					local_time = call.getCallTime();
+//				} else {
+//					local_time = CallCenterUtilities.getLocalTime(call_center_time, zone.replace("UTC", ""));
+//				}
+//				
+//				if (CallCenterUtilities.getTimeToOpen(local_time)) {
+//					System.out.println("Call being routed to " + c.getCommonName() + ". Local time is: " + local_time.toString());
+//					return c;
+//				}
+//			}	
+//		}
+//		
+		return null;
+	}
+	
+	//Loops through each timezone for a country
+	//Checks to see if the timezones are open for business
+	//As soon as one open timezone is found, it is returned
+	public String checkCountryTimezones(String country_code, Call call) {
+		List<String> country_timezones = cd.getCountryByCode(country_code).getTimeZones();
+		ZonedDateTime call_time_local = call.getCallTime();
+		
+		
+		for (String zone : country_timezones) {
+			ZonedDateTime time_to_check = CallCenterUtilities.getLocalTime(call_time_local, zone);
+			if (CallCenterUtilities.getTimeToOpen(time_to_check)) {
+				return zone;
+			}
 		}
 		
-		//Handles no zones being open
-		System.out.println("No countries available. Call dropped");
 		return null;
+	}
+	
+	public String getFinalResult(HashMap<String, String> set, Call call) {
+		if (set.size() == 0) {
+			return "No call centers open with desired language. Call disconnected.";
+		} else {
+			
+//			Country c = getClosestCountry()
+		}
+		return null;
+
 	}
 }

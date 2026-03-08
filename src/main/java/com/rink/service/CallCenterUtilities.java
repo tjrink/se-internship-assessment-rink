@@ -54,11 +54,15 @@ public class CallCenterUtilities {
 	}
 
 	
-	public static ZonedDateTime getLocalTime(ZonedDateTime call_center_time, String timezone) {
-		String timezone_formatted = timezone.replace("UTC", "");
-		return call_center_time.withZoneSameInstant(ZoneId.of(timezone_formatted));
-		//toOffsetDateTime(timezone.replace("UTC", ""));
-		
+	public static ZonedDateTime getLocalTime(ZonedDateTime call_time, String timezone) {
+		String timezone_formatted;		
+		if (timezone.equals("UTC")) {
+			timezone_formatted = timezone;
+		} else {
+			timezone_formatted = timezone.replace("UTC", "");
+		}
+
+		return call_time.withZoneSameInstant(ZoneId.of(timezone_formatted));
 	}
 	
 	//Determines if it is currently within working hours at the given time.
@@ -72,5 +76,26 @@ public class CallCenterUtilities {
 			return false;
 		}
 		
+	}
+	
+	public static double haversineDistance(double lat1, double lon1, double lat2, double lon2) {
+        // Convert degrees to radians
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        // Convert start and end latitudes to radians for use in the formula
+        double lat1Rad = Math.toRadians(lat1);
+        double lat2Rad = Math.toRadians(lat2);
+
+        // Haversine formula parts
+        double a = Math.pow(Math.sin(dLat / 2), 2) + 
+                   Math.cos(lat1Rad) * Math.cos(lat2Rad) * 
+                   Math.pow(Math.sin(dLon / 2), 2);
+        
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // Calculate final distance
+        //6371 is the radius of the Earth in km
+        return 6371 * c;
 	}
 }

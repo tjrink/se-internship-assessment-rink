@@ -18,13 +18,6 @@ public class Call {
 		this.call_language = language;
 		this.call_timezone = timezone;
 		this.call_time_local= call_time;
-		
-		System.out.println("New call Created");
-		System.out.println("Country Code: " + country_code);
-		System.out.println("Call language: " + call_language);
-		System.out.println("Timezone: " + call_timezone);
-		System.out.println("Call Time: " + call_time_local.toString());
-		
 	}
 	
 	//Returns a string identifying the time of the call, along with its originating country and the UTC-0 time 
@@ -41,6 +34,11 @@ public class Call {
 		
 
 		return utc_hours + ":" + utc_mins + ":" + utc_seconds + ": Call From " + this.call_country_code + ". Requested Language: " + this.call_language + ". Local Time: " + local_hours + ":" + local_mins + ":" + local_seconds;
+	}
+	
+	//Returns the call's country
+	public String getCountryCode() {
+		return this.call_country_code;
 	}
 	
 	//Return the language the call is held in

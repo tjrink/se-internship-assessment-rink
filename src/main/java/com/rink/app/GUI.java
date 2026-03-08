@@ -5,6 +5,7 @@ import javax.swing.border.TitledBorder;
 
 import com.rink.model.Country;
 import com.rink.model.CountryDirectory;
+import com.rink.service.Call;
 import com.rink.service.CallCenter;
 
 import java.awt.*;
@@ -231,11 +232,13 @@ public class GUI extends JFrame {
 					showInvalidDateMessage();
 				}
 				
+				Call call = cc.getLatestCall();
 				//Prints the intro message for the call
-				console.append(cc.getLatestCall().getCallIntro() + "\n");
+				console.append(call.getCallIntro() + "\n");
 				console.append("Identifying appropriate call center\n");
 				
-				
+				console.append(cc.routeCall(call)+"\n");
+				console.append("*".repeat(32) + "\n");
 			}
 		});
 
