@@ -55,14 +55,13 @@ public class CallCenterUtilities {
 
 	
 	public static ZonedDateTime getLocalTime(ZonedDateTime call_time, String timezone) {
-		String timezone_formatted;		
-		if (timezone.equals("UTC")) {
-			timezone_formatted = timezone;
-		} else {
-			timezone_formatted = timezone.replace("UTC", "");
-		}
-
-		return call_time.withZoneSameInstant(ZoneId.of(timezone_formatted));
+	    ZoneOffset offset;
+	    if (timezone.equals("UTC")) {
+	        offset = ZoneOffset.UTC;
+	    } else {
+	        offset = ZoneOffset.of(timezone.replace("UTC", ""));
+	    }
+	    return call_time.withZoneSameInstant(offset);
 	}
 	
 	//Determines if it is currently within working hours at the given time.

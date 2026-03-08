@@ -105,7 +105,7 @@ public class CallCenter {
 			String openZone = checkCountryTimezones(countryCode, call);
 			if (openZone != null) {
 				Country routedCountry = cd.getCountryByCode(countryCode);
-				ZonedDateTime routedTime= CallCenterUtilities.getLocalTime(call.getCallTime(), openZone);
+				ZonedDateTime routedTime = CallCenterUtilities.getLocalTime(call.getCallTimeInUTC0(), openZone);
 				String routedHours = String.format("%02d", routedTime.getHour());
 				String routedMins = String.format("%02d", routedTime.getMinute());
 				String routedTimePrintout = routedHours + ":" + routedMins;
@@ -113,31 +113,8 @@ public class CallCenter {
 				return "Call being routed to call center in " + routedCountry.getCapital() + ", " + routedCountry.getCommonName() + ". Local time at call center is " + routedTimePrintout;
 			}
 		}
-//		String finalResult = getFinalResult(potentialCountries);
-		
-		
-//		//Loop through all valid countries to check for open timezones
-//		for (String s: valid_countries) {
-//			ZonedDateTime local_time; //Initialization
-//			
-//			//Loop through each time zone, return the country if the time is open
-//			Country c = cd.getCountryByCode(s);
-//			for (String zone: c.getTimeZones()) {
-//				//Converts the call center time to the local time in the specified time zone
-//				if (zone.equalsIgnoreCase("UTC")) { //If the timezone is UTC-0, returns local time
-//					local_time = call.getCallTime();
-//				} else {
-//					local_time = CallCenterUtilities.getLocalTime(call_center_time, zone.replace("UTC", ""));
-//				}
-//				
-//				if (CallCenterUtilities.getTimeToOpen(local_time)) {
-//					System.out.println("Call being routed to " + c.getCommonName() + ". Local time is: " + local_time.toString());
-//					return c;
-//				}
-//			}	
-//		}
-//		
-		return null;
+
+		return "No call center available. Call disconnected.";
 	}
 	
 	//Loops through each timezone for a country
@@ -149,7 +126,7 @@ public class CallCenter {
 		
 		
 		for (String zone : country_timezones) {
-			ZonedDateTime time_to_check = CallCenterUtilities.getLocalTime(call_time_local, zone);
+			ZonedDateTime time_to_check = CallCenterUtilities.getLocalTime(call.getCallTimeInUTC0(), zone);
 			if (CallCenterUtilities.getTimeToOpen(time_to_check)) {
 				return zone;
 			}

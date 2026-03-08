@@ -216,13 +216,7 @@ public class GUI extends JFrame {
 				//If not valid, shows an error message
 				if (validateDateSelections(monthSelected, daySelected, yearSelected)) {
 					String timezone;
-					
-					if (selectedTimezone.equals("UTC")) {
-						timezone = selectedTimezone;
-					} else {
-						timezone = selectedTimezone.replace("UTC", "");
-					}
-					
+										
 					LocalDate callDate = LocalDate.of(yearSelected, monthSelected, daySelected);
 					LocalTime callTime = LocalTime.of(hourSelected, minuteSelected, secondSelected);
 					
