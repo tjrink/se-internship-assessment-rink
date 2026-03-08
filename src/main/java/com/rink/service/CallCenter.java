@@ -17,17 +17,11 @@ import java.util.stream.Collectors;
 import com.rink.model.Country;
 import com.rink.model.CountryDirectory;
 
-import java.time.ZoneOffset;
-
 public class CallCenter {
 	private CountryDirectory cd;
-	private ZonedDateTime call_center_time; //The UTC time of the call
 	private ArrayList<Call> calls_list = new ArrayList<Call>();
 
-	public CallCenter(LocalDate date, CountryDirectory cd) {
-		// Combines the provided date and starts at midnight UTC
-		this.call_center_time = date.atTime(LocalTime.MIDNIGHT).atZone(ZoneOffset.UTC);
-
+	public CallCenter(CountryDirectory cd) {
 		this.cd = cd;
 	}
 	
@@ -35,51 +29,10 @@ public class CallCenter {
 		calls_list.add(new Call(country_code, language, timezone, local_call_time));
 	}
 	
-//	public Call(String country_code, String language, ZonedDateTime call_time) {
-//		this.call_country_code = country_code;
-//		this.call_language = language;
-//		this.call_time_utc= call_time;
-
-	// Adds a specified number of minutes to the call center's time
-	public void addTime(long minutes) {
-		call_center_time = this.call_center_time.plusMinutes(minutes);
-	}
-	
 	public CountryDirectory getCountryDirectory() { return this.cd;}
-
-
-	// Returns the current time at the call center
-	public ZonedDateTime getCurrentTime() {
-		return this.call_center_time;
-	}
 	
-	//Returns the current time at the call center as a formatted string
-	public String getCurrentTimeString() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy - HH:mm:ss z");
-		return this.call_center_time.format(formatter);
-	}
-
 	public Call getLatestCall() {
 		return this.calls_list.get(this.calls_list.size() - 1);
-	}
-
-	// Creates a call from a random country in a random language after a random
-	// interval
-	public void generateCall() {
-		// Selects a random country for the call from the list of valid countries
-		List<String> country_code_list = cd.getValidCountryCodes();
-		String selected_country_code = CallCenterUtilities.selectRandomCountry(country_code_list);
-
-		// Selects a random language from the country
-		Country selected_country = cd.getCountryByCode(selected_country_code);
-		Map<String, String> spoken_languages = selected_country.getLanguages();
-		List<String> language_names = new ArrayList<>(spoken_languages.values());
-		String selected_language = CallCenterUtilities.selectRandomLanguage(language_names);
-
-		// Generates a new call and adds it to the array list
-		//calls_list.add(new Call(selected_country_code, selected_language, this.getCurrentTime()));
-		
-		System.out.println("You have messed with CallCenter.generateCall. You need to fix it.");
 	}
 
 	// Identifies the eligible countries to take the call
@@ -110,7 +63,7 @@ public class CallCenter {
 				String routedMins = String.format("%02d", routedTime.getMinute());
 				String routedTimePrintout = routedHours + ":" + routedMins;
 
-				return "Call being routed to call center in " + routedCountry.getCapital() + ", " + routedCountry.getCommonName() + ". Local time at call center is " + routedTimePrintout;
+				return "Call being routed to call center in " + routedCountry.getCommonName() + " (" + openZone + "). Local time at call center is " + routedTimePrintout;
 			}
 		}
 
@@ -135,14 +88,4 @@ public class CallCenter {
 		return null;
 	}
 	
-	public String getFinalResult(HashMap<String, String> set, Call call) {
-		if (set.size() == 0) {
-			return "No call centers open with desired language. Call disconnected.";
-		} else {
-			
-//			Country c = getClosestCountry()
-		}
-		return null;
-
-	}
 }

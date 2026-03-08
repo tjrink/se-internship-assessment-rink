@@ -1,11 +1,8 @@
 package com.rink.app;
 
-import java.time.LocalDate;
-
 import com.rink.client.ApiClient;
 import com.rink.model.CountryDirectory;
 import com.rink.service.CallCenter;
-import com.rink.service.CallCenterUtilities;
 
 public class App {
 
@@ -20,11 +17,8 @@ public class App {
 		CountryDirectory cd = new CountryDirectory(json_response);
 		
 	
-		//Establishes a random date in the current year for the c
-		LocalDate d = CallCenterUtilities.generateRandomDate();
-		
 		//Creates a new CallCenter
-		CallCenter cc = new CallCenter(d, cd);
+		CallCenter cc = new CallCenter(cd);
 		new GUI(cc);		
 	}
 }

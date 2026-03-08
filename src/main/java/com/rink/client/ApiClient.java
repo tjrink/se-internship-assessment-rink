@@ -15,11 +15,9 @@ public class ApiClient {
 		ArrayList<String> fields = new ArrayList<>();
 		fields.add("name");
 		fields.add("cca3");
-		fields.add("capital");
 		fields.add("languages");
 		fields.add("timezones");
-		fields.add("capitalInfo");
-
+	
 		return fields;
 	}
 	

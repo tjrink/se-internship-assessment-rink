@@ -140,16 +140,10 @@ public class GUI extends JFrame {
 		gbc.gridy = 7;
 		gbc.insets = new Insets(20, 10, 10, 10);
 		routePanel.add(createCallButton, gbc);
-
-		// Button to simulate a full day
-		simulateDayButton = new JButton("Simulate Day");
-		simulateDayButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		simulateDayButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-
+		
 		// Pack control panel items
 		controlPanel.add(routePanel);
 		controlPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-		controlPanel.add(simulateDayButton);
 
 		// Add control panel to frame
 		add(controlPanel, BorderLayout.WEST);
@@ -167,6 +161,8 @@ public class GUI extends JFrame {
 
 		// Add countries to the countryDropdown
 		populateCountryDropdown();
+		
+		//Adds options to date and time spinners
 		populateDateDropdowns();
 		
 		//Sets local date and time in spinners and selectors
@@ -192,22 +188,25 @@ public class GUI extends JFrame {
 				for (String s : cci_timezones) {
 					timezoneDropdown.addItem(s);
 				}
-				// You can add your logic here, e.g., update another component
-				// or perform a database query
 			}
 		});
 
+		//Creates the process that is followed when the createCallButton is selected
 		createCallButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				//Record values from country, language and timezone drop downs
 				CountryComboItem cci = (CountryComboItem) countryDropdown.getSelectedItem();
 				String selectedLanguage = (String) languageDropdown.getSelectedItem();
 				String selectedTimezone = (String) timezoneDropdown.getSelectedItem();
 
+				//Record date selections
 				int monthSelected = Integer.parseInt((String) monthDropdown.getSelectedItem());
 				int daySelected = Integer.parseInt((String) dayDropdown.getSelectedItem());
 				int yearSelected = Integer.parseInt((String) yearDropdown.getSelectedItem());
 
+				//Record time selections
 				int hourSelected = (int) hourSpinner.getValue();
 				int minuteSelected = (int) minuteSpinner.getValue();
 				int secondSelected = (int) secondSpinner.getValue();
@@ -230,7 +229,8 @@ public class GUI extends JFrame {
 				//Prints the intro message for the call
 				console.append(call.getCallIntro() + "\n");
 				console.append("Identifying appropriate call center\n");
-				
+
+				//Routes the call and prints the result
 				console.append(cc.routeCall(call)+"\n");
 				console.append("*".repeat(32) + "\n");
 			}
@@ -282,10 +282,15 @@ public class GUI extends JFrame {
 	
 	//Sets the spinners and selectors to the local time
 	public void setLocalTime() {
-		LocalDateTime ahora = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now();
 		yearDropdown.setSelectedIndex(0); //Current year is always first value
-		monthDropdown.setSelectedIndex(ahora.getMonthValue() - 1);
-		dayDropdown.setSelectedIndex(ahora.getDayOfMonth() - 1);
+		monthDropdown.setSelectedIndex(currentTime.getMonthValue() - 1);
+		dayDropdown.setSelectedIndex(currentTime.getDayOfMonth() - 1);
+		
+		hourSpinner.setValue(currentTime.getHour());
+		minuteSpinner.setValue(currentTime.getMinute());
+		secondSpinner.setValue(currentTime.getSecond());
+		
 	}
 	
 	//Shows a popup error message if an invalid date is selected
